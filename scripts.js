@@ -1,97 +1,203 @@
-/**
- * Data Catalog Project Starter Code - SEA Stage 2
- *
- * This file is where you should be doing most of your work. You should
- * also make changes to the HTML and CSS files, but we want you to prioritize
- * demonstrating your understanding of data structures, and you'll do that
- * with the JavaScript code you write in this file.
- *
- * The comments in this file are only to help you learn how the starter code
- * works. The instructions for the project are in the README. That said, here
- * are the three things you should do first to learn about the starter code:
- * - 1 - Change something small in index.html or style.css, then reload your
- *    browser and make sure you can see that change.
- * - 2 - On your browser, right click anywhere on the page and select
- *    "Inspect" to open the browser developer tools. Then, go to the "console"
- *    tab in the new window that opened up. This console is where you will see
- *    JavaScript errors and logs, which is extremely helpful for debugging.
- *    (These instructions assume you're using Chrome, opening developer tools
- *    may be different on other browsers. We suggest using Chrome.)
- * - 3 - Add another string to the titles array a few lines down. Reload your
- *    browser and observe what happens. You should see a fourth "card" appear
- *    with the string you added to the array, but a broken image.
- *
- */
+// global variables 
+let currentPage = 0;
+let filteredGuitars = [];
+for (let i = 0; i < guitars.length; i++) { // shallow copy of guitars array 
+  filteredGuitars.push(guitars[i]);
+}
+let favorites = []; // array stores favorited guitars 
 
-const FRESH_PRINCE_URL =
-  "https://upload.wikimedia.org/wikipedia/en/3/33/Fresh_Prince_S1_DVD.jpg";
-const CURB_POSTER_URL =
-  "https://m.media-amazon.com/images/M/MV5BZDY1ZGM4OGItMWMyNS00MDAyLWE2Y2MtZTFhMTU0MGI5ZDFlXkEyXkFqcGdeQXVyMDc5ODIzMw@@._V1_FMjpg_UX1000_.jpg";
-const EAST_LOS_HIGH_POSTER_URL =
-  "https://static.wikia.nocookie.net/hulu/images/6/64/East_Los_High.jpg";
+const guitarsPerPage = 2; // two guitars per page
 
-// This is an array of strings (TV show titles)
-let titles = [
-  "Fresh Prince of Bel Air",
-  "Curb Your Enthusiasm",
-  "East Los High",
-];
-// Your final submission should have much more data than this, and
-// you should use more than just an array of strings to store it all.
+function createCardHTML(guitar, index) {
+  const isFav = favorites.includes(index); // check if favorited
+  return `
+    <li class="guitar-card">
+      <div class="guitar-image">
+        <img src="${guitar.image}" alt="${guitar.name}">
+      </div>
+      <div class="guitar-info">
+        <h3>${guitar.name}</h3>
+        <p><strong>Price:</strong> $${guitar.price}</p>
+        <p><strong>Type:</strong> ${guitar.type}</p>
+        <p><strong>Brand:</strong> ${guitar.brand}</p>
+        <p><strong>New/Used:</strong> ${guitar.isNew}</p>
+        <p>${guitar.description}</p>
+        <p><a href="${guitar.url}" target="_blank">Link to Buy</a></p>
+      </div>
+      <i class="favorite-icon ${isFav ? "favorited" : ""}" onclick="favoriteStar(${index})">
+        <i class="fas fa-star"></i>
+      </i>
+    </li>
+  `;
+}
 
-// This function adds cards the page to display the data in the array
-function showCards() {
-  const cardContainer = document.getElementById("card-container");
-  cardContainer.innerHTML = "";
-  const templateCard = document.querySelector(".card");
 
-  for (let i = 0; i < titles.length; i++) {
-    let title = titles[i];
+function updatePages() {
+  const leftPage = document.getElementById("left-page");
+  const rightPage = document.getElementById("right-page");
+  const startIndex = currentPage * guitarsPerPage;
+  const endIndex = startIndex + guitarsPerPage;
+  const pageItems = filteredGuitars.slice(startIndex, endIndex); // show guitar cards
+  // clear everythign on right and left page 
+  leftPage.innerHTML = "";
+  rightPage.innerHTML = "";
 
-    // This part of the code doesn't scale very well! After you add your
-    // own data, you'll need to do something totally different here.
-    let imageURL = "";
-    if (i == 0) {
-      imageURL = FRESH_PRINCE_URL;
-    } else if (i == 1) {
-      imageURL = CURB_POSTER_URL;
-    } else if (i == 2) {
-      imageURL = EAST_LOS_HIGH_POSTER_URL;
+  // create a card for each guitar and assign to column
+  for (let i = 0; i< pageItems.length; i++) {
+    const guitar = pageItems[i];
+    const cardHTML = createCardHTML(guitar, startIndex + i);
+  
+    if (i === 0) {
+      leftPage.innerHTML = cardHTML; 
+    } else if (i === 1) {
+      rightPage.innerHTML = cardHTML;
     }
+  }
+  
+}
 
-    const nextCard = templateCard.cloneNode(true); // Copy the template card
-    editCardContent(nextCard, title, imageURL); // Edit title and image
-    cardContainer.appendChild(nextCard); // Add new card to the container
+// Update the favorites popup list
+function updateFavoritesPopUp() {
+  const favList = document.getElementById("favoritesList");
+  favList.innerHTML = "";
+  
+  favorites.forEach(favIdx => {
+    const guitar = guitars[favIdx];
+    const li = document.createElement("li");
+    // pop up html 
+    li.innerHTML = `
+      <div class="fav-card">
+        <div class="fav-image">
+          <img src="${guitar.image}" alt="${guitar.name}">
+        </div>
+        <div class="fav-info">
+          <h3>${guitar.name}</h3>
+          <p><strong>Brand:</strong> ${guitar.brand}</p>
+          <p><strong>Type:</strong> ${guitar.type}</p>
+          <p><strong>Price:</strong> $${guitar.price}</p>
+          <p><strong>New/Used:</strong> ${guitar.isNew}</p>
+          <p>${guitar.description}</p>
+          <p><a href="${guitar.url}" target="_blank">Link to Buy</a></p>
+        </div>
+        <button class="remove-btn" onclick="removeFavorite(${favIdx})">&times;</button>
+      </div>
+    `;
+    favList.appendChild(li);
+  });
+}
+
+// add to favorite or remove if already favorited
+function favoriteStar(index) {
+  const favIndex = favorites.indexOf(index);
+  if (favIndex == -1) {
+    favorites.push(index);
+    updatePages();
+    updateFavoritesPopUp();
+  } else {
+    favorites.splice(favIndex, 1); // remove from favorites 
+    updatePages();
+    updateFavoritesPopUp();
   }
 }
 
-function editCardContent(card, newTitle, newImageURL) {
-  card.style.display = "block";
-
-  const cardHeader = card.querySelector("h2");
-  cardHeader.textContent = newTitle;
-
-  const cardImage = card.querySelector("img");
-  cardImage.src = newImageURL;
-  cardImage.alt = newTitle + " Poster";
-
-  // You can use console.log to help you debug!
-  // View the output by right clicking on your website,
-  // select "Inspect", then click on the "Console" tab
-  console.log("new card:", newTitle, "- html: ", card);
+// Remove a favorite inside popup, user clicks 'x'
+function removeFavorite(index) {
+  const favIndex = favorites.indexOf(index);
+  if (favIndex != -1) {
+    favorites.splice(favIndex, 1); // remove
+    updatePages();
+    updateFavoritesPopUp();
+  }
 }
 
-// This calls the addCards() function when the page is first loaded
-document.addEventListener("DOMContentLoaded", showCards);
+// Search filtering
+document.getElementById("searchInput").addEventListener("input", function() {
+  const input = document.getElementById("searchInput");
+  const filter = input.value.toUpperCase(); // not case sensitive
+  
+  // reset filteredGuitars array
+  filteredGuitars = [];
+  
+  // loop through guitars in the original array
+  for (let i = 0; i < guitars.length; i++) {
+    const guitar = guitars[i];
+    const guitarName = guitar.name.toUpperCase();
+    const guitarBrand = guitar.brand.toUpperCase();
+    const guitarType = guitar.type.toUpperCase();
+    const guitarDesc = guitar.description.toUpperCase();
+    
+    // Check if search term is found 
+    if (guitarName.indexOf(filter) > -1 || 
+        guitarBrand.indexOf(filter) > -1 || 
+        guitarType.indexOf(filter) > -1 || 
+        guitarDesc.indexOf(filter) > -1) {
+      // add to guitars displayed 
+      filteredGuitars.push(guitar);
+    }
+  }
 
-function quoteAlert() {
-  console.log("Button Clicked!");
-  alert(
-    "I guess I can kiss heaven goodbye, because it got to be a sin to look this good!"
-  );
+  // Update the display
+  updatePages();
+});
+
+// animations below 
+
+// page flip animation 
+function animateFlip(direction, callback) {
+  const flipPage = document.getElementById("pageFlipper");
+  if (direction == "back") {
+      flipPage.style.left = "0";
+      flipPage.style.right = "";
+      flipPage.style.transformOrigin = "right center";
+      flipPage.classList.add("flip-reverse");
+  } else {
+      flipPage.style.left = "";
+      flipPage.style.right = "0";
+      flipPage.style.transformOrigin = "left center";
+      flipPage.classList.add("flip");
+  }
+  setTimeout(() => {
+    if (direction == "back") {
+      flipPage.classList.remove("flip-reverse");
+    } else {
+      flipPage.classList.remove("flip");
+    }
+    callback();
+  }, 500);
 }
 
-function removeLastCard() {
-  titles.pop(); // Remove last item in titles array
-  showCards(); // Call showCards again to refresh
-}
+// animate flip when next or back button's are pressed
+document.getElementById("nextBtn").addEventListener("click", () => {
+  const maxPage = 5;
+  if (currentPage < maxPage) {
+    animateFlip("next", () => {
+      currentPage++;
+      updatePages();
+    });
+  }
+});
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  if (currentPage > 0) {
+    animateFlip("back", () => {
+      currentPage--;
+      updatePages();
+    });
+  }
+});
+
+// Favorites pop up controls
+const favoritesBtn = document.getElementById("favoritesBtn");
+const FavoritesPopUp = document.getElementById("favoritesPopUp");
+const closePopUp = document.getElementById("closePopUp");
+
+favoritesBtn.addEventListener("click", () => {
+  FavoritesPopUp.style.display = "flex";
+});
+
+closePopUp.addEventListener("click", () => {
+  FavoritesPopUp.style.display = "none";
+});
+
+updatePages();
+updateFavoritesPopUp();

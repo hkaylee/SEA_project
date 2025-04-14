@@ -1,31 +1,52 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>LA TV Shows | Home</title>
-    <meta name="description" content="A Catalog of Shows Set in Los Angeles" />
-    <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="scripts.js"></script>
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guitar Catalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <!-- stylesheet for star icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
 
-  <body>
-    <header class="main-header">
-      <h1 class="title">LA TV Shows</h1>
-    </header>
-    <div id="card-container"></div>
-    <div class="card" style="display: none">
-      <div class="card-content">
-        <h2>TV Show Title</h2>
-        <img src="" alt="TV Show Poster" />
-        <ul>
-          <li>Bullet Point 1</li>
-          <li>Bullet Point 2</li>
-          <li>Bullet Point 3</li>
-        </ul>
-      </div>
+  <header>
+    <!-- star icons on right and left corner of header-->
+    <img src="images/stars.png" alt="Stars" class="header-star left"> 
+    <img src="images/stars.png" alt="Stars" class="header-star right">
+    <div class="header-content">
+      <h1>Guitar Catalog</h1>
+      <input type="text" id="searchInput" placeholder="Try Fender...">
     </div>
-    <div class="footer">
-      <button onclick="quoteAlert();">Get A Quote!</button>
-      <button onclick="removeLastCard();">Remove A Card!</button>
+  </header>
+  
+  <div class="flipbook-container">
+    <div class="catalog-page">
+      <!-- split into left and right page -->
+      <div id="left-page" class="guitar-column"></div>
+      <div id="right-page" class="guitar-column"></div>
     </div>
-  </body>
+    <!-- invisible flipping page -->
+    <div id="pageFlipper" class="page-flipper"></div>
+    <div class="nav-buttons">
+      <button id="backBtn">Back</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <!-- favorites button, star from stylesheet-->
+  <button id="favoritesBtn" class="favorites-btn"><i class="fas fa-star"></i></button>
+
+  <!-- Favorites PopUp -->
+  <div id="favoritesPopUp" class="popUp">
+    <div class="popUp-content">
+      <span id="closePopUp" class="close">&times;</span>  <!-- close button-->
+      <h2>Favorites</h2>
+      <ul id="favoritesList"></ul>
+    </div>
+  </div>
+
+  <script src="dataset.js"></script>
+  <script src="scripts.js"></script>
+</body>
 </html>
