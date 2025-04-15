@@ -22,7 +22,7 @@ function createCardHTML(guitar, index) {
         <p><strong>Brand:</strong> ${guitar.brand}</p>
         <p><strong>New/Used:</strong> ${guitar.isNew}</p>
         <p>${guitar.description}</p>
-        <p><a href="${guitar.url}" target="_blank">Link to Buy</a></p>
+        <p><button class="store-btn" onclick="window.open('${guitar.url}', '_blank')">Link to Store</button></p>
       </div>
       <i class="favorite-icon ${isFav ? "favorited" : ""}" onclick="favoriteStar(${index})">
         <i class="fas fa-star"></i>
@@ -77,7 +77,7 @@ function updateFavoritesPopUp() {
           <p><strong>Price:</strong> $${guitar.price}</p>
           <p><strong>New/Used:</strong> ${guitar.isNew}</p>
           <p>${guitar.description}</p>
-          <p><a href="${guitar.url}" target="_blank">Link to Buy</a></p>
+          <p><button class="store-btn" onclick="window.open('${guitar.url}', '_blank')">Link to Store</button></p>
         </div>
         <button class="remove-btn" onclick="removeFavorite(${favIdx})">&times;</button>
       </div>
