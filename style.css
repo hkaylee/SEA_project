@@ -5,7 +5,6 @@
   box-sizing: border-box;
 }
 
-/* Body and header */
 body {
   font-family: 'Segoe UI', Tahoma, 'Geneva', Verdana, sans-serif;
   background-color: #f6f6f6;
@@ -92,7 +91,6 @@ header h1 {
 }
 
 /* Overlay element for the page flip effect */
-/* No fixed left/right positioning here; it will be set dynamically via inline styles */
 .page-flipper {
   position: absolute;
   top: 0;
@@ -240,7 +238,7 @@ header h1 {
   background-color: #fecd0d;
 }
 
-/* Floating favorites button */
+/* favorites button */
 .favorites-btn {
   position: fixed;
   bottom: 20px;
