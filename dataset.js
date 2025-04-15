@@ -30,7 +30,7 @@ const guitars = [
       price: 399.99,
       image: "images/epiphone_dove.png",
       description: "This Epiphone Dove Studio Limited-Edition acoustic-electric guitar comes in a cool Alpine White finish recreating the '60s classic, and features a solid spruce top and iconic pickguard art, plus the Fishman Sonitone pickup system and Grover machine heads.",
-      url: "https://www.guitarcenter.com/Ibanez/GA35FMTCE-Flamed-Maple-Top-Classical-Acoustic-Electric-Guitar-Emerald-Burst-1500000445800.gc",
+      url: "https://www.guitarcenter.com/Epiphone/Limited-Edition-Dove-PRO-Acoustic-Electric-Guitar-Alpine-White-1500000222960.gc",
       isNew: "New",
       favorited: false
     },
@@ -41,7 +41,7 @@ const guitars = [
       price: 339.99,
       image: "images/ibanez_ga35fmtce.png",
       description: "The Ibanez GA35FMTCE flamed maple top classical acoustic-electric guitar combines stunning aesthetics, smooth playability and reliable electronics to deliver a high-quality nylon-string experience. Featuring a thinline cutaway classical body design, this guitar is lightweight and easy to handle, making it perfect for longer practice sessions or performance settings. The flamed maple top provides a bright and focused tone, while the sapele back and sides add warmth and depth to its sound profile. With a narrower 46 mm nut width, this instrument is particularly accessible for players transitioning from steel-string guitars. Equipped with the Ibanez AEQ210T preamp and undersaddle pickup, the GA35FMTCE ensures clear, natural amplification and tonal control, making it a versatile companion for any nylon-string player.",
-      url: "https://www.guitarcenter.com/Epiphone/Limited-Edition-Dove-PRO-Acoustic-Electric-Guitar-Alpine-White-1500000222960.gc",
+      url: "https://www.guitarcenter.com/Ibanez/GA35FMTCE-Flamed-Maple-Top-Classical-Acoustic-Electric-Guitar-Emerald-Burst-1500000445800.gc",
       isNew: "New",
       favorited: false
     },
