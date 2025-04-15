@@ -137,6 +137,7 @@ document.getElementById("searchInput").addEventListener("input", function() {
   }
 
   // Update the display
+  currentPage = 0; 
   updatePages();
 });
 
